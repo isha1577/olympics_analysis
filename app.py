@@ -1,5 +1,3 @@
-# streamlit run app.py
-
 import streamlit as st
 import pandas as pd
 import preprocessor,helper
@@ -17,7 +15,7 @@ st.sidebar.title("Olympics Analysis")
 st.sidebar.image('https://e7.pngegg.com/pngimages/1020/402/png-clipart-2024-summer-olympics-brand-circle-area-olympic-rings-olympics-logo-text-sport.png')
 user_menu = st.sidebar.radio(
     'Select an Option',
-    ('Medal Tally','Overall Analysis','Country-wise Analysis')
+    ('Medal Tally', 'Overall Analysis', 'Country-wise Analysis')
 )
 
 if user_menu == 'Medal Tally':
@@ -47,7 +45,7 @@ if user_menu == 'Overall Analysis':
     nations = df['region'].unique().shape[0]
 
     st.title("Top Statistics")
-    col1,col2,col3 = st.beta_columns(3)
+    col1, col2, col3 = st.columns(3)
     with col1:
         st.header("Editions")
         st.title(editions)
@@ -58,7 +56,7 @@ if user_menu == 'Overall Analysis':
         st.header("Sports")
         st.title(sports)
 
-    col1, col2, col3 = st.beta_columns(3)
+    col1, col2, col3 = st.columns(3)
     with col1:
         st.header("Events")
         st.title(events)
@@ -87,14 +85,14 @@ if user_menu == 'Overall Analysis':
     st.title("No. of Events over time(Every Sport)")
     fig,ax = plt.subplots(figsize=(20,20))
     x = df.drop_duplicates(['Year', 'Sport', 'Event'])
-    ax = sns.heatmap(x.pivot_table(index='Sport', columns='Year', values='Event', aggfunc='count').fillna(0).astype('int'),
+    x = sns.heatmap(x.pivot_table(index='Sport', columns='Year', values='Event', aggfunc='count').fillna(0).astype('int'),
                 annot=True)
     st.pyplot(fig)
 
     st.title("Most successful Athletes")
     sport_list = df['Sport'].unique().tolist()
     sport_list.sort()
-    sport_list.insert(0,'Overall')
+    sport_list.insert(0, 'Overall')
 
     selected_sport = st.selectbox('Select a Sport',sport_list)
     x = helper.most_successful(df,selected_sport)
@@ -117,7 +115,7 @@ if user_menu == 'Country-wise Analysis':
     st.title(selected_country + " excels in the following sports")
     pt = helper.country_event_heatmap(df,selected_country)
     fig, ax = plt.subplots(figsize=(20, 20))
-    ax = sns.heatmap(pt,annot=True)
+    ax = sns.heatmap(pt, annot=True)
     st.pyplot(fig)
 
     st.title("Top 10 athletes of " + selected_country)
